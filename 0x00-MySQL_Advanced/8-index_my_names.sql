@@ -5,6 +5,3 @@
 
 -- Création de l'index idx_name_first sur la première lettre du champ name
 CREATE INDEX idx_name_first ON names ((name, 1));
-
--- Afficher les index pour vérification
-SHOW INDEX FROM names;
