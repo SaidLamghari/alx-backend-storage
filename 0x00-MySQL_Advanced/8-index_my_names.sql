@@ -4,4 +4,4 @@
 -- Auteur SAID LAMGHARI
 
 -- Création de l'index idx_name_first sur la première lettre du champ name
-CREATE INDEX idx_name_first ON names ((name, 1));
+CREATE INDEX idx_name_first ON names (name(1));
