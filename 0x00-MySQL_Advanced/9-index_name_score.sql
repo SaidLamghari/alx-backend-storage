@@ -3,5 +3,5 @@
 -- et le premier chiffre du score
 -- Auteur SAID LAMGHARI
 
-CREATE INDEX idx_name_first_score ON names (LEFT(name, 1), LEFT(score, 1));
+CREATE INDEX idx_name_first_score ON names ((name, 1), (score, 1));
 
