@@ -35,7 +35,7 @@ BEGIN
 
     -- Mise à jour du champ average_score dans la table users pour l'user_id spécifié
     UPDATE users
-    SET averg_score = averg_score
+    SET average_score = averg_score
     WHERE id = user_id;
 
 END //
