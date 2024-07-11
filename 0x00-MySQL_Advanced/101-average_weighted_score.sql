@@ -1,7 +1,5 @@
 -- Script pour créer la procédure stockée ComputeAverageWeightedScoreForUsers
--- Cette procédure calcule et enregistre
--- le score moyen pondéré pour tous les étudiants
--- Auteur SAID LAMGHARI
+-- Cette procédure calcule et enregistre le score moyen pondéré pour tous les étudiants
 
 -- Délimiteur pour gérer les blocs de code
 DELIMITER //
@@ -24,26 +22,25 @@ BEGIN
         END IF;
         
         -- Variables pour calculer le score moyen pondéré
-        DECLARE total_wghtd_score FLOAT;
-        DECLARE total_wghtd FLOAT;
+        DECLARE total_weighted_score FLOAT;
+        DECLARE total_weight FLOAT;
         DECLARE average_score FLOAT;
 
         -- Calculer le score pondéré total pour l'utilisateur
-        SELECT SUM(c.score * p.weight) INTO total_wghtd_score
+        SELECT SUM(c.score * p.weight) INTO total_weighted_score
         FROM corrections c
         JOIN projects p ON c.project_id = p.id
         WHERE c.user_id = user_id;
 
         -- Calculer le poids total pour l'utilisateur
-        SELECT SUM(p.weight) INTO total_wghtd
+        SELECT SUM(p.weight) INTO total_weight
         FROM corrections c
         JOIN projects p ON c.project_id = p.id
         WHERE c.user_id = user_id;
 
-        -- Calculer le score moyen si total_wghtd
-        -- est différent de zéro pour éviter la division par zéro
-        IF total_wghtd > 0 THEN
-            SET average_score = total_wghtd_score / total_wghtd;
+        -- Calculer le score moyen si total_weight est différent de zéro pour éviter la division par zéro
+        IF total_weight > 0 THEN
+            SET average_score = total_weighted_score / total_weight;
         ELSE
             SET average_score = 0;
         END IF;
