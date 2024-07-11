@@ -26,7 +26,7 @@ BEGIN
         -- Variables pour calculer le score moyen pondéré
         DECLARE total_wghtd_score FLOAT;
         DECLARE total_wghtd FLOAT;
-        DECLARE averg_score FLOAT;
+        DECLARE average_score FLOAT;
 
         -- Calculer le score pondéré total pour l'utilisateur
         SELECT SUM(c.score * p.weight) INTO total_wghtd_score
@@ -43,14 +43,14 @@ BEGIN
         -- Calculer le score moyen si total_wghtd
         -- est différent de zéro pour éviter la division par zéro
         IF total_wghtd > 0 THEN
-            SET averg_score = total_wghtd_score / total_wghtd;
+            SET average_score = total_wghtd_score / total_wghtd;
         ELSE
-            SET averg_score = 0;
+            SET average_score = 0;
         END IF;
 
         -- Mettre à jour le champ average_score dans la table users pour le user_id actuel
         UPDATE users
-        SET average_score = averg_score
+        SET average_score = average_score
         WHERE id = user_id;
         
     END LOOP;
