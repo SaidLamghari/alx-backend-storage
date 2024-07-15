@@ -12,10 +12,5 @@ def update_topics(mongo_collection, name, topics):
     in MongoDB collection based on name.
     """
     # Update the document matching the name with new topics
-    rslt = mongo_collection.update_one(
-        {"name": name},
-        {"$set": {"topics": topics}}
-    )
-
     # Print a message indicating how many documents were modified (optional)
-    mongo_collection.update_many(rslt)
+    mongo_collection.update_many({ "name": name }, { "$set": { "topics": topics } })
