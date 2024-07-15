@@ -8,7 +8,8 @@ Auteur SAID LAMGHRI
 
 def update_topics(mongo_collection, name, topics):
     """
-    Update topics of a school document in MongoDB collection based on name.
+    Update topics of a school document
+    in MongoDB collection based on name.
     """
     # Update the document matching the name with new topics
     rslt = mongo_collection.update_one(
@@ -17,4 +18,4 @@ def update_topics(mongo_collection, name, topics):
     )
 
     # Print a message indicating how many documents were modified (optional)
-    print("Modified {} documents".format(rslt.modified_count))
+    mongo_collection.update_many(rslt)
