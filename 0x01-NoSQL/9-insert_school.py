@@ -4,7 +4,6 @@ Module to define a function that inserts a
 document in a MongoDB collection based on kwargs.
 Auteur SAID LAMGHARI
 """
-from pymongo.collection import Collection
 
 
 def insert_school(mongo_collection, **kwargs):
