@@ -16,4 +16,4 @@ def insert_school(mongo_collection, **kwargs):
     rslt = mongo_collection.insert_one(kwargs)
 
     # Return the _id of the newly inserted document
-    return str(rslt.inserted_id)
+    return rslt.inserted_id
