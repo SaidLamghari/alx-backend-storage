@@ -4,7 +4,6 @@ Module to define a function that updates topics of a school
 document based on name in a MongoDB collection.
 Auteur SAID LAMGHRI
 """
-from pymongo.collection import Collection
 
 
 def update_topics(mongo_collection, name, topics):
