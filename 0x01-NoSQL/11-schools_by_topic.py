@@ -12,10 +12,10 @@ def schools_by_topic(mongo_collection, topic):
     """
     # Query MongoDB collection for schools with the given topic
     # Projection to include only 'name' and 'topics' fields
-    schools = mongo_collection.find(
+    schls = mongo_collection.find(
         {"topics": topic},
         {"name": 1, "topics": 1}
     )
 
     # Return list of schools matching the topic
-    return list(schools)
+    return list(schls)
