@@ -7,7 +7,7 @@ Auteur SAID LAMGHARI
 from pymongo.collection import Collection
 
 
-def insert_school(mongo_collection: Collection, **kwargs) -> str:
+def insert_school(mongo_collection: Collection, **kwargs):
     """
     Insert a new document into the MongoDB
     collection with the provided kwargs.
