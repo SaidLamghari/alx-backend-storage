@@ -8,6 +8,7 @@ from pymongo.errors import ConnectionFailure
 
 
 def get_nginx_stats():
+    """test"""
     try:
         # Connect to MongoDB
         client = MongoClient('mongodb://127.0.0.1:27017')
