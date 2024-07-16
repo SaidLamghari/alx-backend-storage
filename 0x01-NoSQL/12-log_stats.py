@@ -1,43 +1,47 @@
 #!/usr/bin/env python3
 """
-Script Python pour se connecter à une base de données MongoDB
-et récupérer des statistiques de logs Nginx.
-
-Ce script se connecte à MongoDB et compte les documents dans la
-collection 'nginx' du db 'logs'. Il affiche ensuite
-le nombre total de logs, ainsi que le décompte des requêtes pour
-chaque méthode HTTP (GET, POST, PUT, PATCH, DELETE) et
-le nombre de requêtes de vérification de statut (GET /status).
-
-Assurez-vous d'avoir pymongo installé:
-    $ pip3 install pymongo
+Python script to fetch and display statistics about Nginx logs stored in MongoDB.
 """
 
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
+
+
+def get_nginx_stats():
+    try:
+        # Connect to MongoDB
+        client = MongoClient('mongodb://127.0.0.1:27017')
+        # Select the collection 'nginx' in the database 'logs'
+        nginx_collection = client.logs.nginx
+
+        # Count total logs
+        total_logs = nginx_collection.count_documents({})
+        print(f"{total_logs} logs")
+
+        # Count by HTTP method
+        methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+        print("Methods:")
+        for method in methods:
+            method_count = nginx_collection.count_documents({"method": method})
+            print(f"\tmethod {method}: {method_count}")
+
+        # Count status checks (GET /status)
+        status_check_count = nginx_collection.count_documents({
+            "method": "GET",
+            "path": "/status"
+        })
+        print(f"{status_check_count} status check")
+
+    except ConnectionFailure as e:
+        print(f"Error connecting to MongoDB: {e}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    finally:
+        if client:
+            client.close()
 
 
 if __name__ == "__main__":
-    """
-    Fonction pour récupérer et afficher
-    les statistiques des logs Nginx depuis MongoDB.
-    """
-    # Connexion au client MongoDB
-    client = MongoClient('mongodb://127.0.0.1:27017')
-    # Sélection de la collection 'nginx' dans la base de données 'logs'
-    nginx_collection = client.logs.nginx
-
-    # Nombre total de logs
-    count = nginx_collection.count_documents({})
-    print(f"{count} logs")
-
-    # Affichage du décompte par méthode HTTP
-    print("Méthodes:")
-    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-    for method in methods:
-        method_count = nginx_collection.count_documents({"method": method})
-        print(f"\tMéthode {method}: {method_count}")
-
-    # Nombre de requêtes de vérification de statut (GET /status)
-    status_check_count = nginx_collection.count_documents({"method": "GET",
-                                                           "path": "/status"})
-    print(f"{status_check_count} vérifications de statut")
+    get_nginx_stats()
