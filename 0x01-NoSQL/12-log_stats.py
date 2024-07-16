@@ -16,7 +16,7 @@ Assurez-vous d'avoir pymongo installé:
 from pymongo import MongoClient
 
 
-def log_stats():
+if __name__ == "__main__":
     """
     Fonction pour récupérer et afficher
     les statistiques des logs Nginx depuis MongoDB.
@@ -41,7 +41,3 @@ def log_stats():
     status_check_count = nginx_collection.count_documents({"method": "GET",
                                                            "path": "/status"})
     print(f"{status_check_count} vérifications de statut")
-
-
-if __name__ == "__main__":
-    log_stats()
