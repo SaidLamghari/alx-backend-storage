@@ -1,33 +1,43 @@
 #!/usr/bin/env python3
 """
-Script to provide stats about
-Nginx logs stored in MongoDB
-Auteur SAIDLAMGHARI
+Script Python pour se connecter à une base de données MongoDB
+et récupérer des statistiques de logs Nginx.
+
+Ce script se connecte à MongoDB et compte les documents dans la
+collection 'nginx' du db 'logs'. Il affiche ensuite
+le nombre total de logs, ainsi que le décompte des requêtes pour
+chaque méthode HTTP (GET, POST, PUT, PATCH, DELETE) et
+le nombre de requêtes de vérification de statut (GET /status).
+
+Assurez-vous d'avoir pymongo installé:
+    $ pip3 install pymongo
 """
+
 from pymongo import MongoClient
 
 
 def log_stats():
     """
-    Function to retrieve and display stat
-    about Nginx logs stored in MongoDB
+    Fonction pour récupérer et afficher
+    les statistiques des logs Nginx depuis MongoDB.
     """
-    # Connect to MongoDB
+    # Connexion au client MongoDB
     client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client.logs
-    collection = db.nginx
+    # Sélection de la collection 'nginx' dans la base de données 'logs'
+    nginx_collection = client.logs.nginx
 
-    # Total number of logs
-    ttl_logs = collection.count_documents({})
-    print("{} logs".format(ttl_logs))
+    # Nombre total de logs
+    count = nginx_collection.count_documents({})
+    print(f"{count} logs")
 
-    # Count methods
+    # Affichage du décompte par méthode HTTP
+    print("Méthodes:")
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
-        cnt = collection.count_documents({"method": method})
-        print("\tmethod {}: {}".format(method, cnt))
+        method_count = nginx_collection.count_documents({"method": method})
+        print(f"\tMéthode {method}: {method_count}")
 
-    # Count logs with method=GET and path=/status
-    cnt_status = collection.count_documents({"method": "GET",
-                                             "path": "/status"})
-    print("{} status check".format(cnt_status))
+    # Nombre de requêtes de vérification de statut (GET /status)
+    status_check_count = nginx_collection.count_documents({"method": "GET",
+                                                           "path": "/status"})
+    print(f"{status_check_count} vérifications de statut")
