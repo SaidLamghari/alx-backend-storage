@@ -21,16 +21,16 @@ def get_page(url: str) -> str:
     html_ky = f"html:{url}"
     # Incrémente le compteur d'accès à l'URL
     r.incr(cache_ky)
-    
+
     # Vérifie si le contenu est déjà en cache
     cached_html = r.get(html_ky)
     if cached_html:
         return cached_html.decode('utf-8')
-    
+
     # Si non en cache, récupère le contenu de l'URL
     rspnse = requests.get(url)
     html_cntnt = rspnse.text
-    
+
     # Stocke le contenu dans Redis avec une expiration de 10 secondes
     r.setex(html_ky, 10, html_cntnt)
     return html_cntnt
@@ -45,18 +45,18 @@ def cache_decorator(method: Callable) -> Callable:
         r = redis.Redis()
         cache_ky = f"count:{url}"
         html_ky = f"html:{url}"
-        
+
         # Incrémente le compteur d'accès à l'URL
         r.incr(cache_ky)
-        
+
         # Vérifie si le contenu est déjà en cache
         cached_html = r.get(html_ky)
         if cached_html:
             return cached_html.decode('utf-8')
-        
+
         # Si non en cache, appelle la fonction originale
         html_cntnt = method(url, *args, **kwargs)
-        
+
         # Stocke le contenu dans Redis avec une expiration de 10 secondes
         r.setex(html_ky, 10, html_cntnt)
         return html_cntnt
