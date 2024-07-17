@@ -54,7 +54,7 @@ class Cache:
             return fn(data)
         return data
 
-    def get_str(self, key: str) -> Union[str, None]:
+    def get_str(self, key: str) -> str:
         """
         Récupère les données depuis Redis pour la clé donnée et
         décode les bytes en chaîne de caractères UTF-8.
@@ -68,7 +68,7 @@ class Cache:
         """
         return self.get(key, fn=lambda d: d.decode("utf-8"))
 
-    def get_int(self, key: str) -> Union[int, None]:
+    def get_int(self, key: str) -> int:
         """
         Récupère les données depuis Redis pour
         la clé donnée et convertit en entier.
