@@ -1,0 +1,4 @@
+// File : 5-count Count the number of documents in the collection school
+// Count the documents in the school collection and print the count
+print(db.school.count())
+
